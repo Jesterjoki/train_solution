@@ -69,7 +69,7 @@ class Schedule:
         _________________________________________________________________________
         Return the best route and "minimum" weights in a tuple like ([0, 4, 1, 3, 2], 312)
         '''
-        current_vortex = start_vortex if start_vortex == None else 0
+        current_vortex = start_vortex if start_vortex != None else 0
         vortices = len(graph)
         passed_vortices = [current_vortex]
         route_weight = 0
@@ -106,9 +106,9 @@ class Schedule:
         match param:
             case "price":
                 self._get_weight = (lambda schedule: float(schedule[3]))
-                self._is_exect_schedule = (lambda schedule, route:
-                                            schedule[1:4] == route[0])
-                self._formatting_result = (lambda x: f"{x}$")
+                self._is_exect_schedule = (lambda sch, rout:
+                                sch[1:3] + [str(float(sch[3]))] == rout[0])
+                self._formatting_result = (lambda x: f"{round(x, 2)}$")
                 self._search_mode = param
             case "time":
                 self._get_weight = (lambda schedule:
@@ -125,7 +125,7 @@ class Schedule:
         '''Finds the best route and prints it'''
         self._weight_matrix = self._get_weight_matrix()
         num_sts = len(self.stations)
-        nna_result = self._nearest_neighbor_algorithm(self._weight_matrix, 0)
+        nna_result = self._nearest_neighbor_algorithm(self._weight_matrix, 1)
         route = []
         # Finds a route based on the NNA result
         for i, p in enumerate(nna_result[0]):
